@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "Resource_M.h"
 #include "Kismet/GameplayStatics.h"
+#include "BuildingPart.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -47,52 +48,76 @@ public:
 	UFUNCTION()
 	void FindObject();
 
+
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* PlayerCamComp;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
-	float Health = 100.0f;
+	float Health = 100.0f; //default player health
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
-	float Hunger = 100.0f;
+	float Hunger = 100.0f; //default player hunger
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
-	float Stamina = 100.0f;
+	float Stamina = 100.0f; //default player stamina
 
 
 	UFUNCTION(BlueprintCallable)
-	void SetHealth(float amount);
+	void SetHealth(float amount); //set health function
 
 	UFUNCTION(BlueprintCallable)
-	void SetHunger(float amount);
+	void SetHunger(float amount); //set hunger function
 
 	UFUNCTION(BlueprintCallable)
-	void SetStamina(float amount);
+	void SetStamina(float amount); //set stamina function
 
 	UPROPERTY(EditAnywhere, Category = "Resources")
-	int Wood;
+	int Wood;  //wood property
 
 	UPROPERTY(EditAnywhere, Category = "Resources")
-	int Stone;
+	int Stone; //stone property
 
 	UPROPERTY(EditAnywhere, Category = "Resources")
-	int Berry;
+	int Berry; //berry property
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resources")
-	TArray<int> ResourcesArray;
+	TArray<int> ResourcesArray; //Array for resource to set them to an array int
 
 	UPROPERTY(EditAnywhere, Category = "Resources")
-	TArray<FString> ResourcesNameArray;
+	TArray<FString> ResourcesNameArray; //array for resources to set the name to the array int
 
 	UPROPERTY(EditAnywhere, Category = "HitMarker")
-	UMaterialInterface* hitDecal;
+	UMaterialInterface* hitDecal; //visual hit feedback for line trace
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building Supplies")
+	TArray<int> BuildingArray;
+
+	UPROPERTY()
+	bool isBuilding;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TSubclassOf<ABuildingPart> BuildPartClass;
+
+	UPROPERTY()
+	ABuildingPart* SpawnedPart;
 	
 
 	UFUNCTION()
-	void DecreaseStats();
+	void DecreaseStats(); //decrease stats function
 
 	UFUNCTION()
-	void GiveResource(float amount, FString resourceType);
+	void GiveResource(float amount, FString resourceType); //give resources function
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateResources(float woodAmount, float stoneAmount, FString buildingObject);
+
+	UFUNCTION(BlueprintCallable)
+	void SpawnBuilding(int buildingID, bool& isSuccess);
+
+	UFUNCTION()
+	void RotateBuilding();
+
+
 
 
 
