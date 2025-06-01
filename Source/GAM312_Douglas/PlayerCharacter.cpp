@@ -15,8 +15,8 @@ APlayerCharacter::APlayerCharacter()
 	PlayerCamComp->bUsePawnControlRotation = true;
 
 	//Resource array constructor
-	BuildingArray.SetNum(3);
-	ResourcesArray.SetNum(3);
+	BuildingArray.SetNum(3); //array for building pieces
+	ResourcesArray.SetNum(3); //array for resources
 	ResourcesNameArray.Add(TEXT("Wood"));
 	ResourcesNameArray.Add(TEXT("Stone"));
 	ResourcesNameArray.Add(TEXT("Berry"));
@@ -41,6 +41,8 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	playerUI->UpdateBars(Health, Hunger, Stamina);
 
 	if (isBuilding)
 	{
@@ -138,13 +140,13 @@ void APlayerCharacter::FindObject()
 
 						SetStamina(-5.0f);
 
-						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Stamina Remaining: %f"), Stamina));
+
 					}
 					else //if resource value is becoming zero
 					{
 						HitResource->Destroy(); //destroy actor
 						check(GEngine != nullptr);
-						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("ResourceDepleted"));//print resource depleted
+
 					}
 
 				}
@@ -220,7 +222,7 @@ void APlayerCharacter::GiveResource(float amount, FString resourceType) //initia
 	}
 }
 
-void APlayerCharacter::UpdateResources(float woodAmount, float stoneAmount, FString buildingObject)
+void APlayerCharacter::UpdateResources(float woodAmount, float stoneAmount, FString buildingObject) //function to update resource array as resources are gathered/used
 {
 	if (woodAmount <= ResourcesArray[0])
 	{
@@ -245,7 +247,7 @@ void APlayerCharacter::UpdateResources(float woodAmount, float stoneAmount, FStr
 	}
 }
 
-void APlayerCharacter::SpawnBuilding(int buildingID, bool& isSuccess)
+void APlayerCharacter::SpawnBuilding(int buildingID, bool& isSuccess) //spawn building pieces at camera + distance location
 {
 	if (!isBuilding)
 	{
@@ -267,7 +269,7 @@ void APlayerCharacter::SpawnBuilding(int buildingID, bool& isSuccess)
 	}
 }
 
-void APlayerCharacter::RotateBuilding()
+void APlayerCharacter::RotateBuilding()  //rotate building
 {
 	if (isBuilding)
 	{
