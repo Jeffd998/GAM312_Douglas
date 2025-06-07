@@ -34,6 +34,12 @@ void APlayerCharacter::BeginPlay()
 
 	FTimerHandle StatsTimerHandle; //stats timer for stats depreciation
 	GetWorld()->GetTimerManager().SetTimer(StatsTimerHandle, this, &APlayerCharacter::DecreaseStats, 2.0f, true);
+
+	if (objWidget)
+	{
+		objWidget->UpdatebuildObj(0.0f); //set UpdagebuildObj to zero on begin play
+		objWidget->UpdatematObj(0.0f); //set UpdatematObj to zero on begin play
+	}
 	
 }
 
@@ -132,6 +138,10 @@ void APlayerCharacter::FindObject()
 					{
 						GiveResource(resourceValue, hitName);
 
+						matsCollected = matsCollected + resourceValue; //to track mats collected on widget
+
+						objWidget->UpdatematObj(matsCollected); //update widget with matscollected
+
 						check(GEngine != nullptr);
 						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Resource Collected ")); //display resource collected
 
@@ -146,6 +156,7 @@ void APlayerCharacter::FindObject()
 					{
 						HitResource->Destroy(); //destroy actor
 						check(GEngine != nullptr);
+						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Resource Depleted"));
 
 					}
 
@@ -158,7 +169,9 @@ void APlayerCharacter::FindObject()
 	else
 	{
 		isBuilding = false;
+		objectsBuilt = objectsBuilt + 1.0f; //add one to objects built in widget
 
+		objWidget->UpdatebuildObj(objectsBuilt);//update widget
 	}
 }
 

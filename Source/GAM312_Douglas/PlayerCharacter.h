@@ -9,6 +9,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "BuildingPart.h"
 #include "PlayerWidget.h"
+#include "ObjectiveWidget.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -104,7 +105,15 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UPlayerWidget* playerUI;
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UObjectiveWidget* objWidget; //variable for objectivewidget 
+
+	UPROPERTY()
+	float objectsBuilt; //variable for tracking objects built in a float
+
+	UPROPERTY()
+	float matsCollected; //variable for tracking mats collected
 
 	UFUNCTION()
 	void DecreaseStats(); //decrease stats function
